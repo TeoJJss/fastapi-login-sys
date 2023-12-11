@@ -1,7 +1,10 @@
 import string, random, datetime, sqlite3
+from config import AUTH_DB
+
+auth_db=AUTH_DB
 
 def create_db():
-    conn = sqlite3.connect('auth.db')
+    conn = sqlite3.connect(auth_db)
 
     sql='''
         CREATE TABLE AUTH
@@ -25,10 +28,22 @@ def generate_ticket():
     return ticket
 
 def insert_ticket(ticket, name):
-    conn = sqlite3.connect('auth.db')
+    conn = sqlite3.connect(auth_db)
 
     insert_sql=f"INSERT INTO AUTH (TICKET, NAME) VALUES ('{ticket}', '{name}')"
 
     conn.execute(insert_sql)
+    conn.commit()
 
     conn.close()
+
+def get_name(ticket):
+    conn = sqlite3.connect(auth_db)
+    sql=f"SELECT NAME FROM AUTH WHERE TICKET='{ticket}'"
+
+    cur = conn.cursor()
+    cur.execute(sql)
+
+    name = cur.fetchall()
+    conn.close()
+    return name
