@@ -6,35 +6,9 @@
     <title>Home Page</title>
 </head>
 <body>  
+    <script src="./src/functions.js"></script>
+    <script>home();</script>
     <h1>Login Success!</h1>
     <h2>Welcome <span id="username"></span></h2>
 </body>
-<script>
-    var host = "127.0.0.1";
-    var port = "8000";
-    var base_url = `http://${host}:${port}`;
-    const ticket = sessionStorage.getItem('ticket');
-
-    if (ticket != null){
-        const xhr2 = new XMLHttpRequest();
-        xhr2.open("GET", `${base_url}/auth?ticket=${ticket}`);
-        xhr2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr2.setRequestHeader('Access-Control-Allow-Origin', '*');
-        xhr2.onload = () => {
-          if (xhr2.status == 200) {
-            var res2 = JSON.parse(xhr2.responseText);
-            document.getElementById("username").innerHTML = res2.username; 
-          }else if (xhr2.status == 401){
-            alert("Unauthorized access! Please login again.");
-            location.href = "index.html";
-          }else{
-            alert("Unexpected issue occurs.");
-            location.href = "index.html";
-          }
-        }
-        xhr2.send();
-    }else{
-        location.href = "index.html";
-    }
-</script>
 </html>

@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, APIRouter
 from services.service import *
 import sqlite3, os
 from fastapi.responses import JSONResponse
@@ -13,9 +13,12 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+router = APIRouter()
+
 auth_db=AUTH_DB
 
-@app.post("/ticket")
+@router.post("/ticket")
 async def create_ticket(request: Request):
     
     ticket = generate_ticket()
@@ -29,7 +32,7 @@ async def create_ticket(request: Request):
 
     return JSONResponse(content={"ticket": ticket}, status_code=201)
 
-@app.get("/auth")
+@router.get("/auth")
 def auth(ticket:str):
     name_ls=get_name(ticket)
     if len(name_ls) != 1:
@@ -37,3 +40,5 @@ def auth(ticket:str):
     else:
         name=name_ls[0][0]
     return JSONResponse({"username": name}, status_code=200)
+
+app.include_router(router, prefix="/api")
