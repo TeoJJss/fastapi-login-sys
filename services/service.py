@@ -83,3 +83,13 @@ def get_name(ticket):
     name = cur.fetchall()
     conn.close()
     return name
+
+def delete_ticket(ticket):
+    conn = sqlite3.connect(auth_db)
+
+    del_sql=f"DELETE FROM TICKETS WHERE TICKET='{ticket}'"
+
+    conn.execute(del_sql)
+    conn.commit()
+
+    conn.close()

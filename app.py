@@ -47,4 +47,9 @@ def auth(ticket:str):
         name=name_ls[0][0]
     return JSONResponse({"username": name}, status_code=200)
 
+@router.delete("/logout")
+def delete(ticket:str):
+    delete_ticket(ticket)
+    return JSONResponse({"msg": "Delete ticket success"}, status_code=200)
+
 app.include_router(router, prefix="/api")

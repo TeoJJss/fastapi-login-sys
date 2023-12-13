@@ -8,6 +8,7 @@ function login(){
 
   if (name.trim() === "" || password.trim() === ""){
     alert("Please login");
+    return;
   }
 
   const xhr = new XMLHttpRequest();
@@ -62,6 +63,29 @@ function home(){
           document.getElementById("username").innerHTML = res2.username; 
         }else if (xhr2.status == 401){
           alert("Unauthorized access! Please login again.");
+          location.href = "index.html";
+        }else{
+          alert("Unexpected issue occurs.");
+          location.href = "index.html";
+        }
+      }
+      xhr2.send();
+  }else{
+      location.href = "index.html";
+  }
+}
+
+function logout(){
+  const ticket = sessionStorage.getItem('ticket');
+
+  if (ticket != null){
+      const xhr2 = new XMLHttpRequest();
+      xhr2.open("DELETE", `${base_url}/logout?ticket=${ticket}`);
+      xhr2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      xhr2.setRequestHeader('Access-Control-Allow-Origin', '*');
+      xhr2.onload = () => {
+        if (xhr2.status == 200) {
+          sessionStorage.removeItem('ticket');
           location.href = "index.html";
         }else{
           alert("Unexpected issue occurs.");
