@@ -1,13 +1,17 @@
 const host = "127.0.0.1";
 const port = "8000";
-const base_url = `http://${host}:${port}`;
+const base_url = `http://${host}:${port}/api`;
 
 function login(){
   var name = document.getElementById("name").value;
   var password = document.getElementById("password").value;
 
+  if (name.trim() === "" || password.trim() === ""){
+    alert("Please login");
+  }
+
   const xhr = new XMLHttpRequest();
-  xhr.open("POST", `${base_url}/api/ticket`);
+  xhr.open("POST", `${base_url}/ticket`);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
   const body = JSON.stringify({
@@ -20,7 +24,7 @@ function login(){
       var tic = res.ticket; 
 
       const xhr2 = new XMLHttpRequest();
-      xhr2.open("GET", `${base_url}/api/auth?ticket=${tic}`);
+      xhr2.open("GET", `${base_url}/auth?ticket=${tic}`);
       xhr2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
       xhr2.setRequestHeader('Access-Control-Allow-Origin', '*');
       xhr2.onload = () => {
@@ -35,6 +39,8 @@ function login(){
         }
       }
       xhr2.send();
+    } else if (xhr.status == 401){
+      alert("Wrong username or password!")
     } else {
       console.log(`Error: ${xhr.status}`);
     }
@@ -47,7 +53,7 @@ function home(){
 
   if (ticket != null){
       const xhr2 = new XMLHttpRequest();
-      xhr2.open("GET", `${base_url}/api/auth?ticket=${ticket}`);
+      xhr2.open("GET", `${base_url}/auth?ticket=${ticket}`);
       xhr2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
       xhr2.setRequestHeader('Access-Control-Allow-Origin', '*');
       xhr2.onload = () => {

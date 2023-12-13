@@ -18,16 +18,22 @@ router = APIRouter()
 
 auth_db=AUTH_DB
 
+if not os.path.isfile(auth_db):
+    create_db()
+
 @router.post("/ticket")
 async def create_ticket(request: Request):
-    
-    ticket = generate_ticket()
+    # Get request body
     body = await request.json()
     name=body['name']
     password=body['password']
 
-    if not os.path.isfile(auth_db):
-        create_db()
+    # Generate ticket
+    ticket = generate_ticket(name, password)
+    if ticket == None: # Invalid user
+        return JSONResponse(content={"msg": "Unauthenticated"}, status_code=401)
+
+    # Insert ticket to DB
     insert_ticket(ticket, name)
 
     return JSONResponse(content={"ticket": ticket}, status_code=201)
