@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Request, APIRouter
 from services.service import *
-import sqlite3, os
+import os
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from config import AUTH_DB
