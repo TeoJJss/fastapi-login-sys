@@ -45,7 +45,7 @@ The table below shows the existing user credentials for login:
 <i>All the credentials are case-sensitive</i><br>
 
 After entering username and password accordingly, click "Login" button to login. Upon successful login, user will be redirected to `home.html`.  
-In `home.html`, user can click "Logout" hyperlink to log out. After logging out, the user cannot access `home.html`. 
+In `home.html`, user can click "Logout" hyperlink to log out. After logging out, the user cannot access `home.html` anymore. 
 
 <h2>Developer Guide</h2>
 Before launching the backend server, developers should take note the following tips:<br>
@@ -54,7 +54,7 @@ Before launching the backend server, developers should take note the following t
 2. If you launch the backend server in different port number (other than 8000), please modify the host and port number at `src/functions.js`.
 3. If you would like to add more authenticated users, please modify the SQL in the `insert_users_sql` variable at `services/service.py`. 
 
-All authenticated users are stored in the `USERS` table. Upon successful login, the backend system will create a ticket and add both username and ticket string to the `TICKETS` table. The ticket will be saved in session variable of the browser too.  
-When `home.html` is accessed, the system will retrieve the ticket string in the session variable and check if its existence in `TICKETS` table.  
+All authenticated users are stored in the `USERS` table. Upon successful login, the backend system will create a ticket and add both username and ticket string to the `TICKETS` table. The ticket will be saved in session variable too.  
+When `home.html` is accessed, the system will retrieve the ticket string in the session variable and check its existence in `TICKETS` table.  
 When user logout, the system delete the ticket string from the `TICKETS` table. The session variable is removed from the frontend side. This will restrict the user to access the `home.html` or other authenticated webpages.     
 Frontend and backend are integrated through FastAPI.   
